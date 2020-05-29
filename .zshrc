@@ -19,7 +19,7 @@ POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND="white"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -115,6 +115,7 @@ alias py3=python3
 alias py=python
 alias python3.7=/usr/bin/python3
 alias python3.7-2=/usr/local/Cellar/python/3.7.6_1/Frameworks/Python.framework/Versions/3.7/bin/python3.7
+alias g90=gcc -std=c90
 
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
