@@ -10,7 +10,7 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon user dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 POWERLEVEL9K_USER_DEFAULT_FOREGROUND="white"
 POWERLEVEL9K_USER_DEFAULT_BACKGROUND="black"
-# POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="red"
+# POWERLEVEL9K_DIR_BACKGROUND="green"
 POWERLEVEL9K_OS_ICON_BACKGROUND="black"
 POWERLEVEL9K_OS_ICON_FOREGROUND="white"
 POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND="white"
@@ -100,6 +100,7 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+# ===================================== alias ==============================
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -117,6 +118,33 @@ alias python3.7=/usr/bin/python3
 alias python3.7-2=/usr/local/Cellar/python/3.7.6_1/Frameworks/Python.framework/Versions/3.7/bin/python3.7
 alias g90=gcc -std=c90
 
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+# ============================= custom functions ============================
+source /usr/local/bin/proxy-set-up
+
+# =============================== env variables =============================
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.oh-my-zsh/plugins/incr/incr*.zsh
+
+export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
+export GUILE_LOAD_COMPILED_PATH="/usr/local/lib/guile/3.0/site-ccache"
+export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+
+# ================================ conda setup ==============================
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/sheey/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/sheey/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/sheey/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/sheey/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# ================================== PATH ===================================
+export PATH=$HOME/go/bin:$PATH
