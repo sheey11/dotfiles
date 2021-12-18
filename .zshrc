@@ -79,7 +79,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git incr sudo)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -115,36 +115,30 @@ alias plz=sudo
 alias py3=python3
 alias py=python
 alias python3.7=/usr/bin/python3
-alias python3.7-2=/usr/local/Cellar/python/3.7.6_1/Frameworks/Python.framework/Versions/3.7/bin/python3.7
 alias g90=gcc -std=c90
+alias vim="mvim -v"
+alias tldr -t base16
 
 # ============================= custom functions ============================
 source /usr/local/bin/proxy-set-up
 
 # =============================== env variables =============================
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 
 export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
 export GUILE_LOAD_COMPILED_PATH="/usr/local/lib/guile/3.0/site-ccache"
 export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 
-# ================================ conda setup ==============================
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/sheey/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/sheey/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/sheey/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/sheey/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 # ================================== PATH ===================================
 export PATH=$HOME/go/bin:$PATH
+export PATH="/usr/local/sbin:$PATH"
+export PATH=$HOME/.android/bin:$PATH
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
+
+# ======================== iTerm2 Shell Integration =========================
+source ~/.iterm2_shell_integration.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export CPPFLAGS="-I/usr/local/opt/openjdk/include"
+
