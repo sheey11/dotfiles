@@ -115,9 +115,34 @@ alias plz=sudo
 alias py3=python3
 alias py=python
 alias python3.7=/usr/bin/python3
-alias g90=gcc -std=c90
+alias g90="gcc -std=c90"
+alias g++="g++ -std=c++11"
 alias vim="mvim -v"
 alias tldr -t base16
+
+alias du1="sudo du -h -d1 | sort -hr"
+alias dune="sudo du -h -d1 2>/dev/null | sort -hr"
+
+alias d=docker
+alias k=kubectl
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+alias g=git
+alias ga="git add"
+alias gs="git status"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gmt="go mod tidy"
+alias gg="go get"
+alias "?=man"
+
+if [[ "$(uname)" == 'Darwin' ]]; then
+    alias ports="sudo lsof -i -P"
+else
+    alias ports="sudo netstat -nlp"
+fi
 
 # ============================= custom functions ============================
 source /usr/local/bin/proxy-set-up
