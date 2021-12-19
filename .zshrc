@@ -136,7 +136,8 @@ alias gc="git commit"
 alias gcm="git commit -m"
 alias gmt="go mod tidy"
 alias gg="go get"
-alias "?=man"
+alias "?=tldr"
+alias "?!=man"
 
 if [[ "$(uname)" == 'Darwin' ]]; then
     alias ports="sudo lsof -i -P"
