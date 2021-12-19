@@ -1,0 +1,1 @@
+. $HOME/.pwshrc.ps1
