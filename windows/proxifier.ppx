@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxifierProfile version="102" platform="Windows" product_id="0" product_minver="400">
+	<Options>
+		<Resolve>
+			<AutoModeDetection enabled="false" />
+			<ViaProxy enabled="true" />
+			<ExclusionList OnlyFromListMode="true">*.steamcommunity.com; *.steampowered.com;  *.steamstatic.com; *discord*</ExclusionList>
+			<DnsUdpMode>0</DnsUdpMode>
+		</Resolve>
+		<Encryption mode="disabled" />
+		<ConnectionLoopDetection enabled="true" resolve="true" />
+		<ProcessOtherUsers enabled="false" />
+		<ProcessServices enabled="false" />
+		<HandleDirectConnections enabled="false" />
+		<HttpProxiesSupport enabled="false" />
+	</Options>
+	<ProxyList>
+		<Proxy id="100" type="SOCKS5">
+			<Options>48</Options>
+			<Port>7890</Port>
+			<Address>127.0.0.1</Address>
+		</Proxy>
+	</ProxyList>
+	<ChainList />
+	<RuleList>
+		<Rule enabled="true">
+			<Action type="Direct" />
+			<Applications>clash-win64.exe</Applications>
+			<Name>clash-win64.exe [auto-created]</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Direct" />
+			<Targets>localhost; 127.0.0.1; %ComputerName%; ::1; 192.168.11.*</Targets>
+			<Name>Localhost</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Targets>*.gradle.org; *.apache.org; github.com; *.githubusercontent.com; *.nvidia.cn;  *.nvidia.com; *.github.dev</Targets>
+			<Name>Developer Websites</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>Cider.exe; winget.exe</Applications>
+			<Name>Regular Apps</Name>
+		</Rule>
+		<Rule enabled="false">
+			<Action type="Proxy">100</Action>
+			<Applications>steamwebhelper.exe; "nvidia geforce experience.exe"</Applications>
+			<Name>Steam</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Direct" />
+			<Targets>*.cm.steampowered.com; *.steamcontent.com</Targets>
+			<Name>SteamDownloads</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Targets>*.steampowered.com; *.steamcommunity.com; *.steamstatic.com; steam-chat.com; *.akamaihd.net</Targets>
+			<Name>SteamDomains</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>FlightSimulator.exe</Applications>
+			<Name>FlightSimulator</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>disneyplus.exe</Applications>
+			<Name>Disney+</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>upc.exe</Applications>
+			<Name>Ubisoft Connect</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>ovrserver_x64.exe; OculusClient.exe; modassistant.exe; "beat saber.exe"</Applications>
+			<Name>Oculus</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Targets>*.facebook.com</Targets>
+			<Name>Oculus</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>maintenancetool.exe</Applications>
+			<Name>Yuzu Emulator</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>Discord.exe; Update.exe</Applications>
+			<Name>Discord</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>aria2c.exe; Motrix.exe</Applications>
+			<Name>Aria</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Proxy">100</Action>
+			<Applications>Unigram.exe; UnigramBridge.exe</Applications>
+			<Name>Unigram</Name>
+		</Rule>
+		<Rule enabled="true">
+			<Action type="Direct" />
+			<Name>Default</Name>
+		</Rule>
+	</RuleList>
+</ProxifierProfile>
