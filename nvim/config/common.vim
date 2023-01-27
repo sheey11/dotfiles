@@ -1,4 +1,6 @@
 set number
+set mouse=
+set relativenumber
 set backspace=indent,eol,start
 
 " background color of losed focus window
@@ -14,7 +16,7 @@ set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
 
-set termwinsize=10x0
+" set termwinsize=10x0
 
 if $TERM_PROGRAM =~ "iTerm"
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -24,6 +26,9 @@ endif
 let g:airline_powerline_fonts = 1
 set nowrap
 
-syntax enable
+syntax on
 filetype plugin indent on
 
+if exists("g:neovide")
+    runtime config/neivide.vim
+endif
