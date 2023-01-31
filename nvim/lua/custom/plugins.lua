@@ -14,17 +14,7 @@ return function(use)
 
   require('go').setup()
 
-  use('simrat39/rust-tools.nvim')
-
-  local rt = require('rust-tools')
-  rt.setup({
-    server = {
-      on_attach = function(_, bufnr)
-        -- Hover actions
-        vim.keymap.set("n", "<Leader>n", rt.hover_actions.hover_actions, { buffer = bufnr, desc = "Rust hover actions" })
-        -- Code action groups
-        vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr, desc = "Rust code action groups"})
-      end,
-    },
-  })
+  use 'simrat39/rust-tools.nvim'
+  require('rust-tools').setup()
+  require('rust-tools').inlay_hints.set()
 end

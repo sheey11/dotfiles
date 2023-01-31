@@ -224,7 +224,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
-  ensure_installed = { 'lua', 'python', 'rust', 'help', 'vim' },
+  ensure_installed = { 'lua', 'python', 'help', 'vim' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -284,10 +284,10 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
+vim.keymap.set('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>', { desc = "Open diagnostic float" })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostic list" })
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
@@ -343,7 +343,6 @@ local servers = {
   -- clangd = {},
   gopls = {},
   -- pyright = {},
-  rust_analyzer = {},
   -- tsserver = {},
 
   sumneko_lua = {
@@ -373,6 +372,10 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
+    if server_name == "rust_analyzer" then
+      require('rust-tools').inlay_hints.set()
+    end
+
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
