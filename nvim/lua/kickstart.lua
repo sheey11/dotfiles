@@ -224,7 +224,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
-  ensure_installed = { 'lua', 'python', 'help', 'vim' },
+  ensure_installed = { 'lua', 'python', 'rust', 'help', 'vim' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -342,6 +342,7 @@ end
 local servers = {
   -- clangd = {},
   gopls = {},
+  rust_analyzer = {},
   -- pyright = {},
   -- tsserver = {},
 
@@ -372,10 +373,6 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    if server_name == "rust_analyzer" then
-      require('rust-tools').inlay_hints.set()
-    end
-
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,

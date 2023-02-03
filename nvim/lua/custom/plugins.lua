@@ -14,7 +14,6 @@ return function(use)
 
   require('go').setup()
 
-  use 'simrat39/rust-tools.nvim'
-  require('rust-tools').setup()
-  require('rust-tools').inlay_hints.set()
+  -- use 'simrat39/rust-tools.nvim'
+  -- require('rust-tools').setup()
 end
