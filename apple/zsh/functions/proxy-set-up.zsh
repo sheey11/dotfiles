@@ -1,4 +1,3 @@
-#!/bin/zsh
 export function proxy() {
     if [[ -z $1 ]]; then
         echo " Usage:   proxy [on|off]"
@@ -7,8 +6,8 @@ export function proxy() {
 
     if [[ $1 = "on" ]]; then
         export all_proxy=socks5://localhost:7890
-        export http_proxy=socks5://localhost:7890
-        export https_proxy=socks5://localhost:7890
+        export http_proxy=http://localhost:7890
+        export https_proxy=http://localhost:7890
         echo Done, proxy now is on.
     elif [[ $1 = "off" ]]; then
         unset all_proxy
