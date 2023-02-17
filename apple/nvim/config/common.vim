@@ -32,3 +32,4 @@ filetype plugin indent on
 if exists("g:neovide")
     runtime config/neivide.vim
 endif
+

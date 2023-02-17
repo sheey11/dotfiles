@@ -1,4 +1,5 @@
-source ~/.config/nvim/lua/kickstart.lua
-source ~/.config/nvim/config/common.vim
-source ~/.config/nvim/config/maps.vim
+runtime lua\kickstart.lua
+runtime config\common.vim
+runtime config\maps.vim
+runtime config\platform.lua
 
