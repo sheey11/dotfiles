@@ -1,4 +1,5 @@
 return function(use)
+  use('nvim-treesitter/playground')
   use('Shatur/neovim-ayu')
   use('ray-x/go.nvim')
   use('ray-x/guihua.lua')
@@ -14,7 +15,4 @@ return function(use)
   })
 
   require('go').setup()
-
-  -- use 'simrat39/rust-tools.nvim'
-  -- require('rust-tools').setup()
 end
