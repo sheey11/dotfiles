@@ -26,6 +26,17 @@ require('packer').startup(function(use)
     },
   }
 
+  -- Debugger
+  use  {
+    'mfussenegger/nvim-dap',
+    requires = {
+      "jay-babu/mason-nvim-dap.nvim",
+      'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
+      'Weissle/persistent-breakpoints.nvim',
+    }
+  }
+
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -55,7 +66,17 @@ require('packer').startup(function(use)
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
-  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+  use {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-live-grep-args.nvim'
+    },
+    config = function()
+      require("telescope").load_extension("live_grep_args")
+    end
+  }
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
@@ -64,6 +85,12 @@ require('packer').startup(function(use)
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
     plugins(use)
+  end
+
+  -- Custom dap extensions
+  local has_ext, ext = pcall(require, 'custom.dap')
+  if has_ext then
+    ext(use)
   end
 
   if is_bootstrap then
@@ -190,6 +217,9 @@ require('gitsigns').setup {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    file_ignore_patterns = {
+      "node_modules"
+    },
     mappings = {
       i = {
         ['<C-u>'] = false,
@@ -216,7 +246,8 @@ end, { desc = '[/] Fuzzily search in current buffer]' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+-- vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sg', require('telescope').extensions.live_grep_args.live_grep_args, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 -- [[ Configure Treesitter ]]
@@ -373,7 +404,9 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
 --
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -403,6 +436,52 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+-- Setup debuggers 
+local dap = require('dap')
+-- local load_launchjs = function() require('dap.ext.vscode').load_launchjs() end
+-- load_launchjs()
+-- vim.api.nvim_create_user_command("DapLoadLaunchjs", load_launchjs, {})
+vim.keymap.set('n', '<F5>', dap.continue, { desc = "[dap] Start Debugging or Continue Execution" })
+vim.keymap.set('n', '<F10>', dap.step_over, { desc = "[dap] Step over" })
+vim.keymap.set('n', '<F11>', dap.step_into, { desc = "[dap] Step into" })
+vim.keymap.set('n', '<F12>', dap.step_out, { desc = "[dap] Step out" })
+vim.keymap.set({'n', 'v'}, '<leader>K', require('dap.ui.widgets').hover, { desc  = "[dap] Open float" })
+-- vim.keymap.set('n', '<leader>ip', dap.repl.toggle, { desc = "[dap] Open REPL Inspector" })
+
+dap.defaults.fallback.externalTerminal = false
+dap.defaults.fallback.externalConsole = false
+dap.defaults.fallback.focus_terminal = false
+
+-- Persist dap breakpoints
+local pb = require('persistent-breakpoints')
+local pba = require('persistent-breakpoints.api')
+pb.setup { load_breakpoints_event = { "BufReadPost" } }
+vim.keymap.set("n", "<leader>b", pba.toggle_breakpoint, { desc = "[dap] Set breakpoint" })
+vim.keymap.set("n", "<leader>B", pba.set_conditional_breakpoint, { desc = "[dap] Set conditional breakpoint" })
+
+-- Mason for dap
+require('mason-nvim-dap').setup({
+  ensure_installed = { 'delve' },
+  automatic_setup = true,
+})
+
+-- setup_handlers is migrated to .default_setup {}
+-- require('mason-nvim-dap').setup_handlers {}
+
+-- Dap virual text
+require('nvim-dap-virtual-text').setup {
+  highlight_changed_variables = true,
+  show_stop_reason = true,
+  all_frames = true,
+}
+
+-- Auto toggle dap ui
+local dapui = require("dapui")
+dapui.setup()
+dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+dap.listeners.before.event_exited["dapui_config"] = dapui.close
+
 -- Turn on lsp status information
 require('fidget').setup()
 
@@ -419,7 +498,7 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-Space>'] = cmp.mapping.complete({}),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
@@ -448,6 +527,12 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+-- Custom setup functions
+local has_setup, setup = pcall(require, 'custom.setup')
+if has_setup then
+  setup()
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

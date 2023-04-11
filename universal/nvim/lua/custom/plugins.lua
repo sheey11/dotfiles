@@ -4,6 +4,7 @@ return function(use)
   use('ray-x/go.nvim')
   use('ray-x/guihua.lua')
   use('github/copilot.vim')
+  use 'rstacruz/vim-closer'
 
   local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
   vim.api.nvim_create_autocmd("BufWritePre", {
