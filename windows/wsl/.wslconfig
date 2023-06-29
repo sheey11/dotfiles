@@ -1,0 +1,5 @@
+# create new switch use following command in pwsh
+# New-VMSwitch -Name br0 -NetAdapterName eth0
+[wsl2]
+networkingMode=bridged
+vmSwitch=br0
