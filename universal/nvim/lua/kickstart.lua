@@ -65,6 +65,9 @@ require('packer').startup(function(use)
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
+  use "windwp/nvim-autopairs"
+  use "windwp/nvim-ts-autotag"
+
   -- Fuzzy Finder (files, lsp, etc)
   use {
     'nvim-telescope/telescope.nvim',
@@ -532,6 +535,14 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require('nvim-ts-autotag').setup()
+-- autopairs bracket
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 -- Custom setup functions
 local has_setup, setup = pcall(require, 'custom.setup')
