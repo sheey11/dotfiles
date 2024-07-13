@@ -1,0 +1,71 @@
+{
+    "log": {
+        "level": "debug"
+    },
+    "plugins": [
+        {
+            "tag": "forward_cf",
+            "type": "forward",
+            "args": {
+                "upstreams": [
+                    {
+                        "addr": "https://1.1.1.1/dns-query",
+                        "socks5": "127.0.0.1:7890",
+                        "max_conns": 8
+                    }
+                ]
+            }
+        },
+        {
+            "tag": "forward_dnspod",
+            "type": "forward",
+            "args": {
+                "upstreams": [
+                    {
+                        "addr": "https://1.12.12.12/dns-query",
+                        "max_conns": 8
+                    }
+                ]
+            }
+        },
+        {
+            "tag": "proxy_list",
+            "type": "domain_set",
+            "args": {
+                "files": [ "./proxy-list.txt" ]
+            }
+        },
+        {
+            "type": "sequence",
+            "tag": "handle_dns_query",
+            "args": [
+                {
+                    "matches": [ "qname $proxy_list" ],
+                    "exec": "mark 1"
+                },
+                {
+                    "matches": [ "mark 1" ],
+                    "exec": "$forward_cf"
+                },
+                {
+                    "matches": [ "!mark 1" ],
+                    "exec": "$forward_dnspod"
+                }
+            ]
+        },
+        {
+            "type": "udp_server",
+            "args": {
+                "entry": "handle_dns_query",
+                "listen": "127.0.0.1:53"
+            }
+        },
+        {
+            "type": "tcp_server",
+            "args": {
+                "entry": "handle_dns_query",
+                "listen": "127.0.0.1:53"
+            }
+        }
+    ]
+}
